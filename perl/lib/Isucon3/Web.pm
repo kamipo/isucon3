@@ -65,7 +65,7 @@ sub markdown {
 sub incr_get_memos_count {
     my($self) = @_;
 
-    $self->memd->incr('get_memos_count');
+    $self->memd->delete('get_memos_count');
     return;
 }
 
