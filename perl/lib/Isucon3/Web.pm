@@ -192,10 +192,10 @@ get '/' => [qw(session get_user)] => sub {
     my ($self, $c) = @_;
 
     my $total = $self->dbh->select_one(
-        'SELECT count(*) FROM memos WHERE is_private=0'
+        'SELECT count(*) FROM public_memos'
     );
     my $memos = $self->dbh->select_all(
-        'SELECT * FROM memos WHERE is_private=0 ORDER BY id DESC LIMIT 100',
+        'SELECT * FROM public_memos JOIN memos ON public_memos.memo_id=memos.id ORDER BY id DESC LIMIT 100',
     );
     $self->set_username_into_memos($memos);
     $c->render('index.tx', {
@@ -209,10 +209,10 @@ get '/recent/:page' => [qw(session get_user)] => sub {
     my ($self, $c) = @_;
     my $page  = int $c->args->{page};
     my $total = $self->dbh->select_one(
-        'SELECT count(*) FROM memos WHERE is_private=0'
+        'SELECT count(*) FROM public_memos'
     );
     my $memos = $self->dbh->select_all(
-        sprintf("SELECT * FROM memos WHERE is_private=0 ORDER BY id DESC LIMIT 100 OFFSET %d", $page * 100)
+        sprintf("SELECT memos.* FROM public_memos JOIN memos ON public_memos.memo_id=memos.id ORDER BY memo_id DESC LIMIT 100 OFFSET %d", $page * 100)
     );
     if ( @$memos == 0 ) {
         return $c->halt(404);
@@ -307,6 +307,12 @@ post '/memo' => [qw(session get_user require_user anti_csrf)] => sub {
         scalar($c->req->param('is_private')) ? 1 : 0,
     );
     my $memo_id = $self->dbh->last_insert_id;
+    unless ($c->req->param('is_private')) {
+        $self->dbh->query(
+            'INSERT INTO public_memos (memo_id) VALUES (?)',
+            $memo_id,
+        );
+    }
     $c->redirect('/memo/' . $memo_id);
 };
 

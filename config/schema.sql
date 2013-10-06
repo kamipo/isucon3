@@ -9,6 +9,12 @@ CREATE TABLE `memos` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `public_memos`;
+CREATE TABLE `public_memos` (
+  `memo_id` int(11) NOT NULL,
+  PRIMARY KEY (`memo_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
