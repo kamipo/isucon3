@@ -419,7 +419,7 @@ get '/memo/:id' => [qw(session get_user)] => sub {
 
     my $user = $c->stash->{user};
 
-    my $obj = $self->get_memo_page($c, $c->args->{id}, $user, 1);
+    my $obj = $self->get_memo_page($c->args->{id}, $user, 1);
     $c->halt(404) unless $obj;
 
     $c->render('memo.tx', $obj);
