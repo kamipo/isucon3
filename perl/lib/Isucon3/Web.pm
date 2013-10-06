@@ -76,6 +76,7 @@ sub set_username_into_memos {
         push @{ $user2memo{$memo->{user}} }, $memo;
     }
 
+    # TODO: memcached で lookup_multi して取ってくる
     my @user_id_list = sort keys %user2memo;
     my $users = $self->dbh->select_all(
         'SELECT id, username FROM users WHERE id IN (?)', \@user_id_list
@@ -84,6 +85,58 @@ sub set_username_into_memos {
         for my $memo (@{ $user2memo{$user->{id}} }) {
             $memo->{username} = $user->{username};
         }
+    }
+}
+
+sub userid_key {
+    my(undef, $id) = @_;
+    "userid:$id";
+}
+sub username_key {
+    my(undef, $id) = @_;
+    "username:$id";
+}
+
+sub get_user {
+    my($self, $by, $key) = @_;
+    if ($by eq 'id') {
+        my $cache_key = $self->userid_key($key);
+        my $data = $self->memd->get($cache_key);
+        unless ($data) {
+            my $user = $self->dbh->select_row(
+                'SELECT username, password, salt FROM users WHERE id=?',
+                $key,
+            );
+            return unless $user;
+            $data = join "\t", $user->{username}, $user->{password}, $user->{salt};
+            $self->memd->set($cache_key, $data);
+        }
+        my @datas = split /\t/, $data;
+        return +{
+            id       => $key,
+            username => $datas[0],
+            password => $datas[1],
+            salt     => $datas[2],
+        };
+    } elsif ($by eq 'name') {
+        my $cache_key = $self->username_key($key);
+        my $data = $self->memd->get($cache_key);
+        unless ($data) {
+            my $user = $self->dbh->select_row(
+                'SELECT id, password, salt FROM users WHERE username=?',
+                $key,
+            );
+            return unless $user;
+            $data = join "\t", $user->{id}, $user->{password}, $user->{salt};
+            $self->memd->set($cache_key, $data);
+        }
+        my @datas = split /\t/, $data;
+        return +{
+            id       => $datas[0],
+            username => $key,
+            password => $datas[1],
+            salt     => $datas[2],
+        };
     }
 }
 
@@ -104,10 +157,7 @@ filter 'get_user' => sub {
         my ($self, $c) = @_;
 
         my $user_id = $c->req->env->{"psgix.session"}->{user_id};
-        my $user = $self->dbh->select_row(
-            'SELECT * FROM users WHERE id=?',
-            $user_id,
-        );
+        my $user = $user_id ? $self->get_user( id => $user_id ) : undef;
         $c->stash->{user} = $user;
         $c->res->header('Cache-Control', 'private') if $user;
         $app->($self, $c);
@@ -193,10 +243,7 @@ post '/signup' => [qw(session anti_csrf)] => sub {
 
     my $username = $c->req->param("username");
     my $password = $c->req->param("password");
-    my $user = $self->dbh->select_row(
-        'SELECT id, username, password, salt FROM users WHERE username=?',
-        $username,
-    );
+    my $user = $self->get_user( name => $username );
     if ($user) {
         $c->halt(400);
     }
@@ -208,6 +255,11 @@ post '/signup' => [qw(session anti_csrf)] => sub {
             $username, $password_hash, $salt,
         );
         my $user_id = $self->dbh->last_insert_id;
+
+        # set cache
+        $self->memd->set($self->userid_key($user_id), join("\t", $username, $password_hash, $salt));
+        $self->memd->set($self->username_key($username), join("\t", $user_id, $password_hash, $salt));
+
         $c->req->env->{"psgix.session"}->{user_id} = $user_id;
         $c->redirect('/mypage');
     }
@@ -218,10 +270,7 @@ post '/signin' => [qw(session)] => sub {
 
     my $username = $c->req->param("username");
     my $password = $c->req->param("password");
-    my $user = $self->dbh->select_row(
-        'SELECT id, username, password, salt FROM users WHERE username=?',
-        $username,
-    );
+    my $user = $self->get_user( name => $username );
     if ( $user && $user->{password} eq sha256_hex($user->{salt} . $password) ) {
         $c->req->env->{"psgix.session.options"}->{change_id} = 1;
         my $session = $c->req->env->{"psgix.session"};
@@ -278,10 +327,10 @@ get '/memo/:id' => [qw(session get_user)] => sub {
         }
     }
     $memo->{content_html} = $self->markdown($memo->{content});
-    $memo->{username} = $self->dbh->select_one(
-        'SELECT username FROM users WHERE id=?',
-        $memo->{user},
-    );
+    $memo->{username} = do {
+        my $user = $self->get_user( id => $memo->{user} );
+        $user->{username};
+    };
 
     my $cond;
     if ($user && $user->{id} == $memo->{user}) {
