@@ -13,7 +13,9 @@ use Encode;
 use Time::Piece;
 use Cache::Memcached::Fast;
 
-my $memd_port = $ENV{MEMD_PORT} || '11211';
+my $DO_NOT_EXPIRE = 10 * 60; # 10 min
+
+my $KEY_MEMOS_COUNT = 'memos_count';;
 
 sub load_config {
     my $self = shift;
@@ -29,26 +31,54 @@ sub load_config {
 sub memd {
     my($self) = @_;
     $self->{_memd} ||= do {
+        my $memd_port = $ENV{MEMD_PORT} || '11211';
         Cache::Memcached::Fast->new({
             servers => [ "localhost:$memd_port" ],
         });
     };
 }
 
+sub cache {
+    my($self, $key, $expires_in, $cb) = @_;
+
+    my $value = $self->memd->get($key);
+    unless (defined $value) {
+        $value = $cb->($key);
+        $self->memd->set($key, $value, $expires_in);
+    }
+    return $value;
+}
+
 sub markdown {
     my($self, $content) = @_;
     my $bytes = encode_utf8($content);
     my $key   = 'markdown:' . sha256_hex($bytes);
-    my $html = $self->memd->get($key);
-    return $html if $html;
 
-    my ($fh, $filename) = tempfile();
-    $fh->print($bytes);
-    $fh->close;
-    $html = qx{ ../bin/markdown $filename };
-    unlink $filename;
-    $self->memd->set($key, $html, 60 * 60);
-    return $html;
+    return $self->cache($key, $DO_NOT_EXPIRE, sub {
+        my ($fh, $filename) = tempfile();
+        $fh->print($bytes);
+        $fh->close;
+        my $html = qx{ ../bin/markdown $filename };
+        unlink $filename;
+        return $html;
+    });
+}
+
+sub incr_memos_count {
+    my($self) = @_;
+
+    $self->memd->delete($KEY_MEMOS_COUNT);
+    return;
+}
+
+sub get_memos_count {
+    my($self) = @_;
+
+    return $self->cache($KEY_MEMOS_COUNT, $DO_NOT_EXPIRE, sub {
+        $self->dbh->select_one(
+            'SELECT count(*) FROM public_memos'
+        );
+    });
 }
 
 sub dbh {
@@ -191,9 +221,7 @@ filter 'anti_csrf' => sub {
 get '/' => [qw(session get_user)] => sub {
     my ($self, $c) = @_;
 
-    my $total = $self->dbh->select_one(
-        'SELECT count(*) FROM public_memos'
-    );
+    my $total = $self->get_memos_count();
     my $memos = $self->dbh->select_all(
         'SELECT * FROM public_memos JOIN memos ON public_memos.memo_id=memos.id ORDER BY public_memos.id DESC LIMIT 100',
     );
@@ -208,9 +236,7 @@ get '/' => [qw(session get_user)] => sub {
 get '/recent/:page' => [qw(session get_user)] => sub {
     my ($self, $c) = @_;
     my $page  = int $c->args->{page};
-    my $total = $self->dbh->select_one(
-        'SELECT count(*) FROM public_memos'
-    );
+    my $total = $self->get_memos_count();
     my $memos = $self->dbh->select_all(
         sprintf("SELECT memos.id AS id, user, content, is_private, created_at, updated_at FROM public_memos JOIN memos ON public_memos.memo_id=memos.id ORDER BY public_memos.id DESC LIMIT 100 OFFSET %d", $page * 100)
     );
@@ -300,12 +326,17 @@ get '/mypage' => [qw(session get_user require_user)] => sub {
 post '/memo' => [qw(session get_user require_user anti_csrf)] => sub {
     my ($self, $c) = @_;
 
+    my $is_private = scalar($c->req->param('is_private')) ? 1 : 0;
+
     $self->dbh->query(
         'INSERT INTO memos (user, content, is_private, created_at) VALUES (?, ?, ?, now())',
         $c->stash->{user}->{id},
         scalar $c->req->param('content'),
-        scalar($c->req->param('is_private')) ? 1 : 0,
+        $is_private,
     );
+    unless ($is_private) {
+        $self->incr_memos_count();
+    }
     my $memo_id = $self->dbh->last_insert_id;
     $c->redirect('/memo/' . $memo_id);
 };
