@@ -36,7 +36,7 @@ sub memd {
 sub markdown {
     my($self, $content) = @_;
     my $bytes = encode_utf8($content);
-    my $key   = 'markdown:' . sha256_hex($bytes)
+    my $key   = 'markdown:' . sha256_hex($bytes);
     my $html = $self->memd->get($key);
     return $html if $html;
 
