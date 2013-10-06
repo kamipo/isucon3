@@ -24,7 +24,7 @@ for my $user (@$users) {
 my $memos = $app->dbh->select_all('SELECT id, user, content, is_private, created_at, updated_at FROM memos');
 for my $memo (@$memos) {
 
-    $app->get_memo_page($memos->{id}, $app->memd->get($app->userid_key($memos->{user})), 1, $memo);
+    $app->get_memo_page($memo->{id}, $app->memd->get($app->userid_key($memo->{user})), 1, $memo);
 
     #$app->memos_user_key()
 }
