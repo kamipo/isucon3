@@ -110,6 +110,7 @@ sub get_user {
                 'SELECT username, password, salt FROM users WHERE id=?',
                 $key,
             );
+            return unless $user;
             $data = join "\t", $user->{username}, $user->{password}, $user->{salt};
             $self->memd->set($cache_key, $data);
         }
@@ -128,6 +129,7 @@ sub get_user {
                 'SELECT id, password, salt FROM users WHERE username=?',
                 $key,
             );
+            return unless $user;
             $data = join "\t", $user->{id}, $user->{password}, $user->{salt};
             $self->memd->set($cache_key, $data);
         }
