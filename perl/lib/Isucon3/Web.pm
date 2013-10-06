@@ -13,6 +13,8 @@ use Encode;
 use Time::Piece;
 use Cache::Memcached::Fast;
 
+my $memd_port = $ENV{MEMD_PORT} || '11211';
+
 sub load_config {
     my $self = shift;
     $self->{_config} ||= do {
@@ -28,7 +30,7 @@ sub memd {
     my($self) = @_;
     $self->{_memd} ||= do {
         Cache::Memcached::Fast->new({
-            servers => [ "localhost:11211" ],
+            servers => [ "localhost:$memd_port" ],
         });
     };
 }
@@ -37,20 +39,15 @@ sub markdown {
     my($self, $content) = @_;
     my $bytes = encode_utf8($content);
     my $key   = 'markdown:' . sha256_hex($bytes);
-    my $html;
-    if (0) {
-        $html = $self->memd->get($key);
-        return $html if $html;
-    }
+    my $html = $self->memd->get($key);
+    return $html if $html;
 
     my ($fh, $filename) = tempfile();
     $fh->print($bytes);
     $fh->close;
     $html = qx{ ../bin/markdown $filename };
     unlink $filename;
-    if (0) {
-        $self->memd->set($key, $html, 60 * 60);
-    }
+    $self->memd->set($key, $html, 60 * 60);
     return $html;
 }
 
