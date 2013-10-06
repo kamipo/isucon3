@@ -360,24 +360,31 @@ get '/memo/:id' => [qw(session get_user)] => sub {
     $memo->{content_html} = $self->markdown($memo->{content});
     $memo->{username} = $self->get_user( id => $memo->{user} )->{username};
 
-    my $cond;
+    # そのユーザの前後のメモのIDを取る
+    my ($newer, $older);
+    my $id = $c->args->{id};
     if ($user && $user->{id} == $memo->{user}) {
-        $cond = "";
+        my $memos = $self->dbh->select_all(
+            '(SELECT id FROM memos WHERE user=? AND id > ? ORDER BY id LIMIT 1) UNION (SELECT id FROM memos WHERE user=? AND id < ? ORDER BY id DESC LIMIT 1)',
+            $memo->{user},
+            $id,
+            $memo->{user},
+            $id,
+        );
+        ($newer, $older) = @$memos;
     }
     else {
-        $cond = "AND is_private=0";
+        my $memos = $self->dbh->select_all(
+            '(SELECT memo_id AS id FROM public_memos WHERE user=? AND memo_id > ? ORDER BY memo_id LIMIT 1) UNION (SELECT memo_id AS id FROM public_memos WHERE user=? AND memo_id < ? ORDER BY memo_id DESC LIMIT 1)',
+            $memo->{user},
+            $id,
+            $memo->{user},
+            $id,
+        );
+        ($newer, $older) = @$memos;
     }
-
-    my $memos = $self->dbh->select_all(
-        "SELECT * FROM memos WHERE user=? $cond ORDER BY created_at",
-        $memo->{user},
-    );
-    my ($newer, $older);
-    for my $i ( 0 .. scalar @$memos - 1 ) {
-        if ( $memos->[$i]->{id} eq $memo->{id} ) {
-            $older = $memos->[ $i - 1 ] if $i > 0;
-            $newer = $memos->[ $i + 1 ] if $i < @$memos;
-        }
+    if ($id > $newer->{id}) {
+        ($older, $newer) = ($newer, $older);
     }
 
     $c->render('memo.tx', {
