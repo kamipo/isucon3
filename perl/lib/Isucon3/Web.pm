@@ -229,7 +229,7 @@ get '/recent/:page' => [qw(session get_user)] => sub {
     my $page  = int $c->args->{page};
     my $total = $self->get_memos_count();
     my $memos = $self->dbh->select_all(
-        sprintf("SELECT memos.id AS id, user, content, is_private, created_at, updated_at FROM public_memos JOIN memos ON public_memos.memo_id=memos.id ORDER BY public_memos.id DESC LIMIT 100 OFFSET %d", $page * 100)
+        sprintf('SELECT memos.* FROM public_memos JOIN memos ON public_memos.memo_id=memos.id WHERE public_memos.id <= (SELECT max_id FROM public_memos_count) - %d ORDER BY public_memos.id DESC     LIMIT 100', $page * 100)
     );
     if ( @$memos == 0 ) {
         return $c->halt(404);
