@@ -14,7 +14,7 @@ use Time::Piece;
 use Cache::Memcached::Fast;
 
 my $memd_port = $ENV{MEMD_PORT} || '11211';
-my $do_not_expire = undef;
+my $do_not_expire = 10 * 60; # 10 min
 
 sub load_config {
     my $self = shift;
@@ -333,7 +333,7 @@ post '/memo' => [qw(session get_user require_user anti_csrf)] => sub {
         $is_private,
     );
     unless ($is_private) {
-        $self->incr_memos_count(); 
+        $self->incr_memos_count();
     }
     my $memo_id = $self->dbh->last_insert_id;
     $c->redirect('/memo/' . $memo_id);
