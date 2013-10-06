@@ -371,7 +371,7 @@ get '/memo/:id' => [qw(session get_user)] => sub {
         );
         ($newer, $older) = @$memos;
     }
-    if ($id > $newer->{id}) {
+    if ($newer && $id > $newer->{id}) {
         ($older, $newer) = ($newer, $older);
     }
 
