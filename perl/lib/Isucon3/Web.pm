@@ -331,11 +331,11 @@ post '/memo' => [qw(session get_user require_user anti_csrf)] => sub {
 };
 
 sub get_memo_older_newer {
-    my($self, $memo_id, $memo_user, $is_public) = @_;
+    my($self, $memo_id, $memo_user, $is_private) = @_;
 
     # そのユーザの前後のメモのIDを取る
     my ($newer, $older);
-    if (! $is_public) {
+    if ($is_private) {
         my $memos = $self->dbh->select_all(
             '(SELECT id FROM memos WHERE user=? AND id > ? ORDER BY id LIMIT 1) UNION (SELECT id FROM memos WHERE user=? AND id < ? ORDER BY id DESC LIMIT 1)',
             $memo_user,
@@ -383,7 +383,7 @@ sub get_memo_page {
         $memo->{content_html} = $self->markdown($memo->{content});
         $memo->{username} = $self->get_user( id => $memo->{user} )->{username};
 
-        my($older, $newer) = $self->get_memo_older_newer($memo_id, $user->{id}, 1);
+        my($older, $newer) = $self->get_memo_older_newer($memo_id, $user->{id}, 0);
 
         my $obj = +{
             memo  => $memo,
@@ -403,7 +403,7 @@ sub get_memo_page {
         $memo->{content_html} = $self->markdown($memo->{content});
         $memo->{username} = $self->get_user( id => $memo->{user} )->{username};
 
-        my($older, $newer) = $self->get_memo_older_newer($memo_id, $user->{id}, 0);
+        my($older, $newer) = $self->get_memo_older_newer($memo_id, $user->{id}, 1);
 
         my $obj = +{
             memo  => $memo,
