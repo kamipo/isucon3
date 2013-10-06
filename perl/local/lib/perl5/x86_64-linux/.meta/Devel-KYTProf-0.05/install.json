@@ -1,0 +1,1 @@
+{"dist":"Devel-KYTProf-0.05","name":"Devel::KYTProf","version":"0.05","pathname":"O/ON/ONISHI/Devel-KYTProf-0.05.tar.gz","target":"Devel::KYTProf","provides":{"Devel::KYTProf::Logger::LTSV":{"file":"lib/Devel/KYTProf/Logger/LTSV.pm"},"Devel::KYTProf":{"file":"lib/Devel/KYTProf.pm","version":"0.05"}}}

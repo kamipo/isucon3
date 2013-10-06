@@ -7,6 +7,10 @@ requires "Time::Piece";
 
 requires "DBD::mysql";
 requires "Starman";
+requires "Starlet";
 requires "Plack::Session";
 requires "Cache::Memcached::Fast";
+
 requires "Test::Memcached";
+requires "Devel::NYTProf";
+requires "Devel::KYTProf";

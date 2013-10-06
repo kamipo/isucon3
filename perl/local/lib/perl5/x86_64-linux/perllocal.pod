@@ -1098,3 +1098,487 @@ C<EXE_FILES: >
 
 =back
 
+=head2 Sun Oct  6 15:27:15 2013: C<Module> L<Test::Memcached|Test::Memcached>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/gfx/isucon3/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.00004>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Sun Oct  6 15:27:19 2013: C<Module> L<UNIVERSAL::require|UNIVERSAL::require>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/gfx/isucon3/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.15>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Sun Oct  6 15:27:20 2013: C<Module> L<Devel::KYTProf|Devel::KYTProf>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/gfx/isucon3/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.05>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Sun Oct  6 15:27:26 2013: C<Module> L<JSON::Any|JSON::Any>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/gfx/isucon3/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.30>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Sun Oct  6 15:27:31 2013: C<Module> L<Algorithm::Diff|Algorithm::Diff>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/gfx/isucon3/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.1902>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Sun Oct  6 15:27:32 2013: C<Module> L<Text::Diff|Text::Diff>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/gfx/isucon3/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.41>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Sun Oct  6 15:27:36 2013: C<Module> L<Devel::NYTProf|Devel::NYTProf>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/gfx/isucon3/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 5.06>
+
+=item *
+
+C<EXE_FILES: bin/nytprofhtml bin/flamegraph.pl bin/nytprofcsv bin/nytprofcalls bin/nytprofcg bin/nytprofmerge>
+
+=back
+
+=head2 Sun Oct  6 16:02:38 2013: C<Module> L<Proc::Wait3|Proc::Wait3>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/webapp/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.04>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Sun Oct  6 16:02:40 2013: C<Module> L<Scope::Guard|Scope::Guard>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/webapp/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.20>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Sun Oct  6 16:02:44 2013: C<Module> L<List::MoreUtils|List::MoreUtils>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/webapp/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.33>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Sun Oct  6 16:02:44 2013: C<Module> L<Server::Starter|Server::Starter>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/webapp/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.15>
+
+=item *
+
+C<EXE_FILES: start_server>
+
+=back
+
+=head2 Sun Oct  6 16:02:47 2013: C<Module> L<Parallel::Prefork|Parallel::Prefork>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/webapp/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.14>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Sun Oct  6 16:02:52 2013: C<Module> L<File::Listing|File::Listing>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/webapp/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 6.04>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Sun Oct  6 16:02:56 2013: C<Module> L<HTML::Tagset|HTML::Tagset>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/webapp/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 3.20>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Sun Oct  6 16:02:58 2013: C<Module> L<HTML::Parser|HTML::Parser>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/webapp/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 3.71>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Sun Oct  6 16:03:00 2013: C<Module> L<HTTP::Daemon|HTTP::Daemon>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/webapp/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 6.01>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Sun Oct  6 16:03:01 2013: C<Module> L<HTTP::Negotiate|HTTP::Negotiate>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/webapp/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 6.01>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Sun Oct  6 16:03:03 2013: C<Module> L<WWW::RobotRules|WWW::RobotRules>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/webapp/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 6.02>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Sun Oct  6 16:03:05 2013: C<Module> L<HTTP::Cookies|HTTP::Cookies>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/webapp/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 6.01>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Sun Oct  6 16:03:08 2013: C<Module> L<Net::HTTP|Net::HTTP>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/webapp/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 6.06>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Sun Oct  6 16:03:09 2013: C<Module> L<LWP|LWP>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/webapp/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 6.05>
+
+=item *
+
+C<EXE_FILES: bin/lwp-request bin/lwp-mirror bin/lwp-download bin/lwp-dump>
+
+=back
+
+=head2 Sun Oct  6 16:03:09 2013: C<Module> L<Starlet|Starlet>
+
+=over 4
+
+=item *
+
+C<installed into: /home/isucon/webapp/perl/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.20>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+

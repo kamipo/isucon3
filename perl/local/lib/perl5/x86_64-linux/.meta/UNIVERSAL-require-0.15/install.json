@@ -1,0 +1,1 @@
+{"target":"UNIVERSAL::require","pathname":"N/NE/NEILB/UNIVERSAL-require-0.15.tar.gz","provides":{"UNIVERSAL":{"file":"lib/UNIVERSAL/require.pm","version":"0.15"},"UNIVERSAL::require":{"file":"lib/UNIVERSAL/require.pm","version":"0.15"}},"name":"UNIVERSAL::require","dist":"UNIVERSAL-require-0.15","version":"0.15"}
