@@ -13,8 +13,10 @@ use Encode;
 use Time::Piece;
 use Cache::Memcached::Fast;
 
-my $memd_port = $ENV{MEMD_PORT} || '11211';
-my $do_not_expire = 10 * 60; # 10 min
+my $MEMD_PORT = $ENV{MEMD_PORT} || '11211';
+my $DO_NOT_EXPIRE = 10 * 60; # 10 min
+
+my $KEY_MEMOS_COUNT = 'memos_count';;
 
 sub load_config {
     my $self = shift;
@@ -31,7 +33,7 @@ sub memd {
     my($self) = @_;
     $self->{_memd} ||= do {
         Cache::Memcached::Fast->new({
-            servers => [ "localhost:$memd_port" ],
+            servers => [ "localhost:$MEMD_PORT" ],
         });
     };
 }
@@ -52,7 +54,7 @@ sub markdown {
     my $bytes = encode_utf8($content);
     my $key   = 'markdown:' . sha256_hex($bytes);
 
-    return $self->cache($key, $do_not_expire, sub {
+    return $self->cache($key, $DO_NOT_EXPIRE, sub {
         my ($fh, $filename) = tempfile();
         $fh->print($bytes);
         $fh->close;
@@ -65,14 +67,14 @@ sub markdown {
 sub incr_get_memos_count {
     my($self) = @_;
 
-    $self->memd->delete('get_memos_count');
+    $self->memd->delete($KEY_MEMOS_COUNT);
     return;
 }
 
 sub get_memos_count {
     my($self) = @_;
 
-    return $self->cache('get_memos_count', $do_not_expire, sub {
+    return $self->cache($KEY_MEMOS_COUNT, $DO_NOT_EXPIRE, sub {
         $self->dbh->select_one(
             'SELECT count(*) FROM memos WHERE is_private=0'
         );
