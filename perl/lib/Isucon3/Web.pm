@@ -13,7 +13,6 @@ use Encode;
 use Time::Piece;
 use Cache::Memcached::Fast;
 
-my $MEMD_PORT = $ENV{MEMD_PORT} || '11211';
 my $DO_NOT_EXPIRE = 10 * 60; # 10 min
 
 my $KEY_MEMOS_COUNT = 'memos_count';;
@@ -32,8 +31,9 @@ sub load_config {
 sub memd {
     my($self) = @_;
     $self->{_memd} ||= do {
+        my $memd_port = $ENV{MEMD_PORT} || '11211';
         Cache::Memcached::Fast->new({
-            servers => [ "localhost:$MEMD_PORT" ],
+            servers => [ "localhost:$memd_port" ],
         });
     };
 }

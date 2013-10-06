@@ -19,8 +19,6 @@ my $web = Isucon3::Web->new($root_dir);
 
 my $count = 0;
 
-$web->memd->delete('foo');
-
 my $value = $web->cache('foo', undef, sub {
     $count++;
     return 42;
