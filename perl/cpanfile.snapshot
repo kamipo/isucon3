@@ -1,5 +1,13 @@
 # carton snapshot format: version 1.0
 DISTRIBUTIONS
+  Algorithm-Diff-1.1902
+    pathname: T/TY/TYEMQ/Algorithm-Diff-1.1902.tar.gz
+    provides:
+      Algorithm::Diff 1.1902
+      Algorithm::Diff::_impl 1.1902
+      Algorithm::DiffOld 1.1
+    requirements:
+      ExtUtils::MakeMaker 0
   Apache-LogFormat-Compiler-0.13
     pathname: K/KA/KAZEBURO/Apache-LogFormat-Compiler-0.13.tar.gz
     provides:
@@ -268,6 +276,42 @@ DISTRIBUTIONS
       Module::Build 0.38
       Mouse 0.93
       perl 5.008001
+  Devel-KYTProf-0.05
+    pathname: O/ON/ONISHI/Devel-KYTProf-0.05.tar.gz
+    provides:
+      Devel::KYTProf 0.05
+      Devel::KYTProf::Logger::LTSV undef
+    requirements:
+      Class::Data::Inheritable 0
+      ExtUtils::MakeMaker 6.36
+      Term::ANSIColor 0
+      Test::More 0.94
+      Time::HiRes 0
+      UNIVERSAL::require 0
+  Devel-NYTProf-5.06
+    pathname: T/TI/TIMB/Devel-NYTProf-5.06.tar.gz
+    provides:
+      Devel::NYTProf 5.06
+      Devel::NYTProf::Apache 4.00
+      Devel::NYTProf::Constants undef
+      Devel::NYTProf::Core 5.06
+      Devel::NYTProf::Data 4.02
+      Devel::NYTProf::FileHandle undef
+      Devel::NYTProf::FileInfo undef
+      Devel::NYTProf::ReadStream 4.00
+      Devel::NYTProf::Reader 4.06
+      Devel::NYTProf::Run undef
+      Devel::NYTProf::SubCallInfo undef
+      Devel::NYTProf::SubInfo undef
+      Devel::NYTProf::Util 4.00
+    requirements:
+      ExtUtils::MakeMaker 0
+      Getopt::Long 0
+      JSON::Any 0
+      List::Util 0
+      Test::Differences 0.60
+      Test::More 0.84
+      XSLoader 0
   Devel-StackTrace-1.30
     pathname: D/DR/DROLSKY/Devel-StackTrace-1.30.tar.gz
     provides:
@@ -524,6 +568,14 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 0
       Test::More 0
+  JSON-Any-1.30
+    pathname: P/PE/PERIGRIN/JSON-Any-1.30.tar.gz
+    provides:
+      JSON::Any 1.30
+      inc::MakeMaker undef
+    requirements:
+      ExtUtils::MakeMaker 6.30
+      perl 5.008
   JSON-XS-2.34
     pathname: M/ML/MLEHMANN/JSON-XS-2.34.tar.gz
     provides:
@@ -904,6 +956,27 @@ DISTRIBUTIONS
       Test::More 0
       Test::NoWarnings 0.02
       Test::Tester 0.04
+  Test-Differences-0.61
+    pathname: O/OV/OVID/Test-Differences-0.61.tar.gz
+    provides:
+      Test::Differences 0.61
+    requirements:
+      Data::Dumper 2.126
+      Module::Build 0.36
+      Test::More 0
+      Text::Diff 0.35
+  Test-Memcached-0.00004
+    pathname: D/DM/DMAKI/Test-Memcached-0.00004.tar.gz
+    provides:
+      Test::Memcached 0.00004
+    requirements:
+      Class::Accessor::Lite 0
+      Cwd 0
+      ExtUtils::MakeMaker 6.42
+      File::Temp 0
+      IO::Socket::INET 0
+      Test::More 0.94
+      Time::HiRes 0
   Test-NoWarnings-1.04
     pathname: A/AD/ADAMK/Test-NoWarnings-1.04.tar.gz
     provides:
@@ -966,6 +1039,17 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 0
       Test::Builder 0
+  Text-Diff-1.41
+    pathname: O/OV/OVID/Text-Diff-1.41.tar.gz
+    provides:
+      Text::Diff 1.41
+      Text::Diff::Base 1.41
+      Text::Diff::Config 1.41
+      Text::Diff::Table 1.41
+    requirements:
+      Algorithm::Diff 1.19
+      Exporter 0
+      ExtUtils::MakeMaker 0
   Text-Xslate-2.0009
     pathname: G/GF/GFUJI/Text-Xslate-2.0009.tar.gz
     provides:
@@ -1025,6 +1109,14 @@ DISTRIBUTIONS
       constant 0
       strict 0
       warnings 0
+  UNIVERSAL-require-0.15
+    pathname: N/NE/NEILB/UNIVERSAL-require-0.15.tar.gz
+    provides:
+      UNIVERSAL 0.15
+      UNIVERSAL::require 0.15
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test::More 0.47
   URI-1.60
     pathname: G/GA/GAAS/URI-1.60.tar.gz
     provides:

@@ -1,0 +1,64 @@
+{
+   "abstract" : "Wrapper Class for the various JSON classes.",
+   "author" : [
+      "Chris Thompson <cthom@cpan.org>",
+      "Chris Prather <chris@prather.org>",
+      "Robin Berjon <robin@berjon.com>",
+      "Marc Mims <marc@questright.com>",
+      "Tomas Doran <bobtfish@bobtfish.net>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 4.300034, CPAN::Meta::Converter version 2.131560, CPAN::Meta::Converter version 2.120921",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "JSON-Any",
+   "prereqs" : {
+      "build" : {
+         "requires" : {}
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "6.30"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Pod::Coverage::TrustPod" : "0",
+            "Test::Pod" : "1.41",
+            "Test::Pod::Coverage" : "1.08"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "perl" : "5.008"
+         }
+      },
+      "test" : {
+         "requires" : {}
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "homepage" : "https://github.com/perigrin/json-any",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/perigrin/json-any.git",
+         "web" : "https://github.com/perigrin/json-any"
+      }
+   },
+   "version" : "1.30",
+   "x_contributors" : [
+      "Chris Prather <cprather@hdpublishing.com>",
+      "Justin Hunter <justin.d.hunter@gmail.com>",
+      "Todd Rinaldo <toddr@cpan.org>",
+      "marc.mims <marc.mims@daca5766-e62f-0410-9ddd-e5e43faa6270>",
+      "nothingmuch@woobling.org <nothingmuch@woobling.org@daca5766-e62f-0410-9ddd-e5e43faa6270>",
+      "perigrin <perigrin@daca5766-e62f-0410-9ddd-e5e43faa6270>",
+      "robin.berjon@gmail.com <robin.berjon@gmail.com@daca5766-e62f-0410-9ddd-e5e43faa6270>"
+   ]
+}
