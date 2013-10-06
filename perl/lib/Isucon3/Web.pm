@@ -114,6 +114,11 @@ sub username_key {
     "username:$id";
 }
 
+sub memos_user_key {
+    my(undef, $id) = @_;
+    "memos_user:$id";
+}
+
 sub get_user {
     my($self, $by, $key) = @_;
     if ($by eq 'id') {
@@ -325,57 +330,99 @@ post '/memo' => [qw(session get_user require_user anti_csrf)] => sub {
     $c->redirect('/memo/' . $memo_id);
 };
 
-get '/memo/:id' => [qw(session get_user)] => sub {
-    my ($self, $c) = @_;
-
-    my $user = $c->stash->{user};
-    my $memo = $self->dbh->select_row(
-        'SELECT id, user, content, is_private, created_at, updated_at FROM memos WHERE id=?',
-        $c->args->{id},
-    );
-    unless ($memo) {
-        $c->halt(404);
-    }
-    if ($memo->{is_private}) {
-        if ( !$user || $user->{id} != $memo->{user} ) {
-            $c->halt(404);
-        }
-    }
-    $memo->{content_html} = $self->markdown($memo->{content});
-    $memo->{username} = $self->get_user( id => $memo->{user} )->{username};
+sub get_memo_older_newer {
+    my($self, $memo_id, $memo_user, $is_public) = @_;
 
     # そのユーザの前後のメモのIDを取る
     my ($newer, $older);
-    my $id = $c->args->{id};
-    if ($user && $user->{id} == $memo->{user}) {
+    if (! $is_public) {
         my $memos = $self->dbh->select_all(
             '(SELECT id FROM memos WHERE user=? AND id > ? ORDER BY id LIMIT 1) UNION (SELECT id FROM memos WHERE user=? AND id < ? ORDER BY id DESC LIMIT 1)',
-            $memo->{user},
-            $id,
-            $memo->{user},
-            $id,
+            $memo_user,
+            $memo_id,
+            $memo_user,
+            $memo_id,
         );
         ($newer, $older) = @$memos;
     }
     else {
         my $memos = $self->dbh->select_all(
             '(SELECT memo_id AS id FROM public_memos WHERE user=? AND memo_id > ? ORDER BY memo_id LIMIT 1) UNION (SELECT memo_id AS id FROM public_memos WHERE user=? AND memo_id < ? ORDER BY memo_id DESC LIMIT 1)',
-            $memo->{user},
-            $id,
-            $memo->{user},
-            $id,
+            $memo_user,
+            $memo_id,
+            $memo_user,
+            $memo_id,
         );
         ($newer, $older) = @$memos;
     }
-    if ($newer && $id > $newer->{id}) {
+    if ($newer && $memo_id > $newer->{id}) {
         ($older, $newer) = ($newer, $older);
     }
 
-    $c->render('memo.tx', {
-        memo  => $memo,
-        older => $older,
-        newer => $newer,
-    });
+    return ($older, $newer);
+}
+
+sub get_memo_page {
+    my($self, $memo_id, $user, $is_public, $memo) = @_;
+
+    $memo ||= $self->dbh->select_row(
+        'SELECT id, user, content, is_private, created_at, updated_at FROM memos WHERE id=?',
+        $memo_id,
+    );
+    return unless $memo;
+
+    if ($is_public) {
+#        my $key = "memos:public:$memo_id";
+#        my $obj = $self->memd->get($key);
+#        return $obj if $obj;
+
+        if ($memo->{is_private}) {
+            return $self->get_memo_page($memo_id, $user, 0, $memo);
+        }
+
+        $memo->{content_html} = $self->markdown($memo->{content});
+        $memo->{username} = $self->get_user( id => $memo->{user} )->{username};
+
+        my($older, $newer) = $self->get_memo_older_newer($memo_id, $user->{id}, 1);
+
+        my $obj = +{
+            memo  => $memo,
+            older => $older,
+            newer => $newer,
+        };
+
+        return $obj;
+    } else {
+
+        if ($memo->{is_private}) {
+            if ( !$user || $user->{id} != $memo->{user} ) {
+                return;
+            }
+        }
+
+        $memo->{content_html} = $self->markdown($memo->{content});
+        $memo->{username} = $self->get_user( id => $memo->{user} )->{username};
+
+        my($older, $newer) = $self->get_memo_older_newer($memo_id, $user->{id}, 0);
+
+        my $obj = +{
+            memo  => $memo,
+            older => $older,
+            newer => $newer,
+        };
+        return $obj;
+    }
+}
+
+get '/memo/:id' => [qw(session get_user)] => sub {
+    my ($self, $c) = @_;
+
+    my $user = $c->stash->{user};
+
+    my $obj = $self->get_memo_page($c, $c->args->{id}, $user, 1);
+    $c->halt(404) unless $obj;
+
+    $c->render('memo.tx', $obj);
 };
 
 1;
