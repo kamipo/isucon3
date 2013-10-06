@@ -14,6 +14,7 @@ use Time::Piece;
 use Cache::Memcached::Fast;
 
 my $memd_port = $ENV{MEMD_PORT} || '11211';
+my $do_not_expire = undef;
 
 sub load_config {
     my $self = shift;
@@ -51,7 +52,7 @@ sub markdown {
     my $bytes = encode_utf8($content);
     my $key   = 'markdown:' . sha256_hex($bytes);
 
-    return $self->cache($key, 60 * 60, sub {
+    return $self->cache($key, $do_not_expire, sub {
         my ($fh, $filename) = tempfile();
         $fh->print($bytes);
         $fh->close;
@@ -61,11 +62,21 @@ sub markdown {
     });
 }
 
+sub incr_get_memos_count {
+    my($self) = @_;
+
+    $self->memd->incr('get_memos_count');
+    return;
+}
+
 sub get_memos_count {
     my($self) = @_;
-    return $self->dbh->select_one(
-        'SELECT count(*) FROM memos WHERE is_private=0'
-    );
+
+    return $self->cache('get_memos_count', $do_not_expire, sub {
+        $self->dbh->select_one(
+            'SELECT count(*) FROM memos WHERE is_private=0'
+        );
+    });
 }
 
 sub dbh {
@@ -264,12 +275,17 @@ get '/mypage' => [qw(session get_user require_user)] => sub {
 post '/memo' => [qw(session get_user require_user anti_csrf)] => sub {
     my ($self, $c) = @_;
 
+    my $is_private = scalar($c->req->param('is_private')) ? 1 : 0;
+
     $self->dbh->query(
         'INSERT INTO memos (user, content, is_private, created_at) VALUES (?, ?, ?, now())',
         $c->stash->{user}->{id},
         scalar $c->req->param('content'),
-        scalar($c->req->param('is_private')) ? 1 : 0,
+        $is_private,
     );
+    unless ($is_private) {
+        $self->incr_memos_count(); 
+    }
     my $memo_id = $self->dbh->last_insert_id;
     $c->redirect('/memo/' . $memo_id);
 };
