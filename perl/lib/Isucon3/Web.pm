@@ -160,7 +160,7 @@ filter 'get_user' => sub {
         my ($self, $c) = @_;
 
         my $user_id = $c->req->env->{"psgix.session"}->{user_id};
-        my $user = $self->get_user( id => $user_id );
+        my $user = $user_id ? $self->get_user( id => $user_id ) : undef;
         $c->stash->{user} = $user;
         $c->res->header('Cache-Control', 'private') if $user;
         $app->($self, $c);
