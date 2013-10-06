@@ -331,7 +331,7 @@ get '/memo/:id' => [qw(session get_user)] => sub {
     }
     $memo->{content_html} = $self->markdown($memo->{content});
     $memo->{username} = do {
-        my $user = $self->get_user( name => $memo->{user} );
+        my $user = $self->get_user( id => $memo->{user} );
         $user->{username};
     };
 
