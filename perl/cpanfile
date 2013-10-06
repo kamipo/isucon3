@@ -10,6 +10,7 @@ requires "Starman";
 requires "Starlet";
 requires "Plack::Session";
 requires "Cache::Memcached::Fast";
+requires "Text::Markdown";
 
 requires "Test::Memcached";
 requires "Devel::NYTProf";
