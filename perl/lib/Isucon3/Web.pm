@@ -11,7 +11,8 @@ use File::Temp qw/ tempfile /;
 use IO::Handle;
 use Encode;
 use Time::Piece;
-use Text::Markdown ();
+use Text::Markdown qw(markdown);
+use Text::Markdown::Discount qw(markdown);
 use Cache::Memcached::Fast;
 
 my $DO_NOT_EXPIRE = 10 * 60; # 10 min
@@ -50,13 +51,13 @@ sub cache {
     return $value;
 }
 
-sub markdown {
+sub render_md {
     my($self, $content) = @_;
     my $bytes = encode_utf8($content);
     my $key   = 'markdown:' . sha256_hex($bytes);
 
     return $self->cache($key, $DO_NOT_EXPIRE, sub {
-        Text::Markdown::markdown($bytes);
+        markdown($bytes);
     });
 }
 
@@ -341,7 +342,7 @@ get '/memo/:id' => [qw(session get_user)] => sub {
             $c->halt(404);
         }
     }
-    $memo->{content_html} = $self->markdown($memo->{content});
+    $memo->{content_html} = $self->render_md($memo->{content});
     $memo->{username} = $self->get_user( id => $memo->{user} )->{username};
 
     # そのユーザの前後のメモのIDを取る

@@ -11,6 +11,7 @@ requires "Starlet";
 requires "Plack::Session";
 requires "Cache::Memcached::Fast";
 requires "Text::Markdown";
+requires "Text::Markdown::Discount";
 
 requires "Test::Memcached";
 requires "Devel::NYTProf";
