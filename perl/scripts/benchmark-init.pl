@@ -5,6 +5,8 @@ use lib '/home/isucon/webapp/perl/lib', '/home/isucon/webapp/perl/local/lib/perl
 
 use File::Basename;
 
+use Isucon3::Web;
+
 my $root_dir = File::Basename::dirname(__FILE__);
 
 my $app = Isucon3::Web->new("$root_dir/..");
