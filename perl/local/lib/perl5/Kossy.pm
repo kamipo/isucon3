@@ -59,6 +59,7 @@ sub build_app {
     #xslate
     my $fif = HTML::FillInForm::Lite->new();
     my $tx = Text::Xslate->new(
+        cache => 2,
         path => [ $self->root_dir . '/views' ],
         input_layer => ':utf8',
         module => ['Text::Xslate::Bridge::TT2Like','Number::Format' => [':subs']],
