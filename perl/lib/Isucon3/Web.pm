@@ -65,6 +65,26 @@ sub dbh {
     };
 }
 
+sub set_username_into_memos {
+    my($self, $memos) = @_;
+
+    my %user2memo;
+    for my $memo (@$memos) {
+        $user2memo{$memo->{user}} ||= [];
+        push @{ $user2memo{$memo->{user}} }, $memo;
+    }
+
+    my @user_id_list = sort keys %user2memo;
+    my $users = $self->dbh->select_all(
+        'SELECT id, username FROM users WHERE id IN (?)', \@user_id_list
+    );
+    for my $user (@$users) {
+        for my $memo (@{ $user2memo{$user->{id}} }) {
+            $memo->{username} = $user->{username};
+        }
+    }
+}
+
 filter 'session' => sub {
     my ($app) = @_;
     sub {
@@ -125,12 +145,7 @@ get '/' => [qw(session get_user)] => sub {
     my $memos = $self->dbh->select_all(
         'SELECT * FROM memos WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 100',
     );
-    for my $memo (@$memos) {
-        $memo->{username} = $self->dbh->select_one(
-            'SELECT username FROM users WHERE id=?',
-            $memo->{user},
-        );
-    }
+    $self->set_username_into_memos($memos);
     $c->render('index.tx', {
         memos => $memos,
         page  => 0,
@@ -151,12 +166,7 @@ get '/recent/:page' => [qw(session get_user)] => sub {
         return $c->halt(404);
     }
 
-    for my $memo (@$memos) {
-        $memo->{username} = $self->dbh->select_one(
-            'SELECT username FROM users WHERE id=?',
-            $memo->{user},
-        );
-    }
+    $self->set_username_into_memos($memos);
     $c->render('index.tx', {
         memos => $memos,
         page  => $page,
