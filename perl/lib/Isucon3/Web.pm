@@ -64,21 +64,25 @@ sub markdown {
     });
 }
 
-sub incr_memos_count {
-    my($self) = @_;
-
-    $self->memd->delete($KEY_MEMOS_COUNT);
-    return;
-}
+#sub incr_memos_count {
+#    my($self) = @_;
+#
+#    $self->memd->delete($KEY_MEMOS_COUNT);
+#    return;
+#}
 
 sub get_memos_count {
     my($self) = @_;
 
-    return $self->cache($KEY_MEMOS_COUNT, $DO_NOT_EXPIRE, sub {
-        $self->dbh->select_one(
-            'SELECT count(*) FROM public_memos'
-        );
-    });
+    $self->dbh->select_one(
+        'SELECT count FROM public_memos_count'
+    );
+
+#    return $self->cache($KEY_MEMOS_COUNT, $DO_NOT_EXPIRE, sub {
+#        $self->dbh->select_one(
+#            'SELECT count FROM public_memos_count'
+#        );
+#    });
 }
 
 sub dbh {
@@ -334,9 +338,9 @@ post '/memo' => [qw(session get_user require_user anti_csrf)] => sub {
         scalar $c->req->param('content'),
         $is_private,
     );
-    unless ($is_private) {
-        $self->incr_memos_count();
-    }
+#    unless ($is_private) {
+#        $self->incr_memos_count();
+#    }
     my $memo_id = $self->dbh->last_insert_id;
     $c->redirect('/memo/' . $memo_id);
 };
