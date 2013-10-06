@@ -12,12 +12,14 @@ use Isucon3::Web;
 my $memd = Test::Memcached->new();
 $memd->start;
 
-$ENV{MEMD_PORT} = $memd->option('tcp_port');
+$ENV{MEMD_PORT} = $memd->option('tcp_port') or die;
 
 my $root_dir = File::Basename::dirname(__FILE__) . "/..";
 my $web = Isucon3::Web->new($root_dir);
 
 my $count = 0;
+
+$web->memd->delete('foo');
 
 my $value = $web->cache('foo', undef, sub {
     $count++;
