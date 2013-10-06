@@ -1,3 +1,4 @@
+use strict;
 use FindBin;
 use lib "$FindBin::Bin/extlib/lib/perl5";
 use lib "$FindBin::Bin/lib";

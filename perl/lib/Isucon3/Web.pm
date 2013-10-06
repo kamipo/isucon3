@@ -4,7 +4,6 @@ use strict;
 use warnings;
 use utf8;
 use Kossy;
-use DBIx::Sunny;
 use JSON qw/ decode_json /;
 use Digest::SHA qw/ sha256_hex /;
 use DBIx::Sunny;
@@ -12,6 +11,7 @@ use File::Temp qw/ tempfile /;
 use IO::Handle;
 use Encode;
 use Time::Piece;
+use Cache::Memcached::Fast;
 
 sub load_config {
     my $self = shift;
@@ -24,13 +24,28 @@ sub load_config {
     };
 }
 
+sub memd {
+    my($self) = @_;
+    $self->{_memd} ||= do {
+        Cache::Memcached::Fast->new
+            servers => [ "localhost:11211" ],
+        );
+    };
+}
+
 sub markdown {
-    my $content = shift;
+    my($self, $content) = @_;
+    my $bytes = encode_utf8($content);
+    my $key   = 'markdown:' . sha256_hex($bytes)
+    my $html = $self->memd->get($key);
+    return $html if $html;
+
     my ($fh, $filename) = tempfile();
-    $fh->print(encode_utf8($content));
+    $fh->print($bytes);
     $fh->close;
     my $html = qx{ ../bin/markdown $filename };
     unlink $filename;
+    $self->memd->set($key, $html, 60 * 60);
     return $html;
 }
 
@@ -250,7 +265,7 @@ get '/memo/:id' => [qw(session get_user)] => sub {
             $c->halt(404);
         }
     }
-    $memo->{content_html} = markdown($memo->{content});
+    $memo->{content_html} = $self->markdown($memo->{content});
     $memo->{username} = $self->dbh->select_one(
         'SELECT username FROM users WHERE id=?',
         $memo->{user},
