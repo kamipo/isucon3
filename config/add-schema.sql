@@ -5,7 +5,7 @@ CREATE TABLE `public_memos` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO public_memos(memo_id) SELECT id FROM memos WHERE is_private=0;
+INSERT INTO public_memos(memo_id) SELECT id FROM memos WHERE is_private=0 ORDER BY id;
 
 DELIMITER //
 
