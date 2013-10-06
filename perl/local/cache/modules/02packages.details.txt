@@ -4,9 +4,12 @@ Description:  Package names found in cpanfile.snapshot
 Columns:      package name, version, path
 Intended-For: Automated fetch routines, namespace documentation.
 Written-By:   Carton v1.0.12
-Line-Count:   477
-Last-Updated: Sun Oct  6 15:27:12 2013
+Line-Count:   505
+Last-Updated: Sun Oct  6 16:02:31 2013
 
+Algorithm::Diff                      1.1902  T/TY/TYEMQ/Algorithm-Diff-1.1902.tar.gz
+Algorithm::Diff::_impl               1.1902  T/TY/TYEMQ/Algorithm-Diff-1.1902.tar.gz
+Algorithm::DiffOld                      1.1  T/TY/TYEMQ/Algorithm-Diff-1.1902.tar.gz
 Apache::LogFormat::Compiler            0.13  K/KA/KAZEBURO/Apache-LogFormat-Compiler-0.13.tar.gz
 Bundle::DBD::mysql                    4.004  C/CA/CAPTTOFU/DBD-mysql-4.024.tar.gz
 Bundle::DBI                       12.008696  T/TI/TIMB/DBI-1.628.tar.gz
@@ -135,6 +138,21 @@ Data::Validator::Role::NoRestricted      undef  G/GF/GFUJI/Data-Validator-1.03.t
 Data::Validator::Role::NoThrow        undef  G/GF/GFUJI/Data-Validator-1.03.tar.gz
 Data::Validator::Role::Sequenced      undef  G/GF/GFUJI/Data-Validator-1.03.tar.gz
 Data::Validator::Role::StrictSequenced      undef  G/GF/GFUJI/Data-Validator-1.03.tar.gz
+Devel::KYTProf                         0.05  O/ON/ONISHI/Devel-KYTProf-0.05.tar.gz
+Devel::KYTProf::Logger::LTSV          undef  O/ON/ONISHI/Devel-KYTProf-0.05.tar.gz
+Devel::NYTProf                         5.06  T/TI/TIMB/Devel-NYTProf-5.06.tar.gz
+Devel::NYTProf::Apache                 4.00  T/TI/TIMB/Devel-NYTProf-5.06.tar.gz
+Devel::NYTProf::Constants             undef  T/TI/TIMB/Devel-NYTProf-5.06.tar.gz
+Devel::NYTProf::Core                   5.06  T/TI/TIMB/Devel-NYTProf-5.06.tar.gz
+Devel::NYTProf::Data                   4.02  T/TI/TIMB/Devel-NYTProf-5.06.tar.gz
+Devel::NYTProf::FileHandle            undef  T/TI/TIMB/Devel-NYTProf-5.06.tar.gz
+Devel::NYTProf::FileInfo              undef  T/TI/TIMB/Devel-NYTProf-5.06.tar.gz
+Devel::NYTProf::ReadStream             4.00  T/TI/TIMB/Devel-NYTProf-5.06.tar.gz
+Devel::NYTProf::Reader                 4.06  T/TI/TIMB/Devel-NYTProf-5.06.tar.gz
+Devel::NYTProf::Run                   undef  T/TI/TIMB/Devel-NYTProf-5.06.tar.gz
+Devel::NYTProf::SubCallInfo           undef  T/TI/TIMB/Devel-NYTProf-5.06.tar.gz
+Devel::NYTProf::SubInfo               undef  T/TI/TIMB/Devel-NYTProf-5.06.tar.gz
+Devel::NYTProf::Util                   4.00  T/TI/TIMB/Devel-NYTProf-5.06.tar.gz
 Devel::StackTrace                      1.30  D/DR/DROLSKY/Devel-StackTrace-1.30.tar.gz
 Devel::StackTrace::AsHTML              0.14  M/MI/MIYAGAWA/Devel-StackTrace-AsHTML-0.14.tar.gz
 Devel::StackTrace::Frame               1.30  D/DR/DROLSKY/Devel-StackTrace-1.30.tar.gz
@@ -182,6 +200,7 @@ HTTP::Tiny                            0.036  D/DA/DAGOLDEN/HTTP-Tiny-0.036.tar.g
 Hash::MultiValue                       0.15  M/MI/MIYAGAWA/Hash-MultiValue-0.15.tar.gz
 IO::HTML                               1.00  C/CJ/CJM/IO-HTML-1.00.tar.gz
 JSON                                   2.59  M/MA/MAKAMAKA/JSON-2.59.tar.gz
+JSON::Any                              1.30  P/PE/PERIGRIN/JSON-Any-1.30.tar.gz
 JSON::Backend::PP                      2.59  M/MA/MAKAMAKA/JSON-2.59.tar.gz
 JSON::Boolean                          2.59  M/MA/MAKAMAKA/JSON-2.59.tar.gz
 JSON::XS                               2.34  M/ML/MLEHMANN/JSON-XS-2.34.tar.gz
@@ -392,6 +411,8 @@ Test::Deep::SuperHash                 undef  R/RJ/RJBS/Test-Deep-0.110.tar.gz
 Test::Deep::SuperHashElements         undef  R/RJ/RJBS/Test-Deep-0.110.tar.gz
 Test::Deep::SuperHashKeys             undef  R/RJ/RJBS/Test-Deep-0.110.tar.gz
 Test::Deep::SuperHashKeysOnly         undef  R/RJ/RJBS/Test-Deep-0.110.tar.gz
+Test::Differences                      0.61  O/OV/OVID/Test-Differences-0.61.tar.gz
+Test::Memcached                     0.00004  D/DM/DMAKI/Test-Memcached-0.00004.tar.gz
 Test::Mouse                           undef  G/GF/GFUJI/Mouse-1.12.tar.gz
 Test::NoWarnings                       1.04  A/AD/ADAMK/Test-NoWarnings-1.04.tar.gz
 Test::NoWarnings::Warning              1.04  A/AD/ADAMK/Test-NoWarnings-1.04.tar.gz
@@ -406,6 +427,10 @@ Test::Tester                          0.109  F/FD/FDALY/Test-Tester-0.109.tar.gz
 Test::Tester::Capture                 undef  F/FD/FDALY/Test-Tester-0.109.tar.gz
 Test::Tester::CaptureRunner           undef  F/FD/FDALY/Test-Tester-0.109.tar.gz
 Test::Tester::Delegate                undef  F/FD/FDALY/Test-Tester-0.109.tar.gz
+Text::Diff                             1.41  O/OV/OVID/Text-Diff-1.41.tar.gz
+Text::Diff::Base                       1.41  O/OV/OVID/Text-Diff-1.41.tar.gz
+Text::Diff::Config                     1.41  O/OV/OVID/Text-Diff-1.41.tar.gz
+Text::Diff::Table                      1.41  O/OV/OVID/Text-Diff-1.41.tar.gz
 Text::Xslate                         2.0009  G/GF/GFUJI/Text-Xslate-2.0009.tar.gz
 Text::Xslate::Bridge                  undef  G/GF/GFUJI/Text-Xslate-2.0009.tar.gz
 Text::Xslate::Bridge::Star            undef  G/GF/GFUJI/Text-Xslate-2.0009.tar.gz
@@ -430,6 +455,8 @@ Text::Xslate::Syntax::TTerse          undef  G/GF/GFUJI/Text-Xslate-2.0009.tar.g
 Text::Xslate::Type::Raw               undef  G/GF/GFUJI/Text-Xslate-2.0009.tar.gz
 Text::Xslate::Util                    undef  G/GF/GFUJI/Text-Xslate-2.0009.tar.gz
 Try::Tiny                              0.18  D/DO/DOY/Try-Tiny-0.18.tar.gz
+UNIVERSAL                              0.15  N/NE/NEILB/UNIVERSAL-require-0.15.tar.gz
+UNIVERSAL::require                     0.15  N/NE/NEILB/UNIVERSAL-require-0.15.tar.gz
 URI                                    1.60  G/GA/GAAS/URI-1.60.tar.gz
 URI::Escape                            3.31  G/GA/GAAS/URI-1.60.tar.gz
 URI::Heuristic                         4.20  G/GA/GAAS/URI-1.60.tar.gz
@@ -483,4 +510,5 @@ URI::urn                              undef  G/GA/GAAS/URI-1.60.tar.gz
 URI::urn::isbn                        undef  G/GA/GAAS/URI-1.60.tar.gz
 URI::urn::oid                         undef  G/GA/GAAS/URI-1.60.tar.gz
 common::sense                          3.72  M/ML/MLEHMANN/common-sense-3.72.tar.gz
+inc::MakeMaker                        undef  P/PE/PERIGRIN/JSON-Any-1.30.tar.gz
 ouse                                  undef  G/GF/GFUJI/Mouse-1.12.tar.gz
