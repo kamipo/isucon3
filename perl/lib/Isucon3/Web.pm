@@ -11,6 +11,7 @@ use File::Temp qw/ tempfile /;
 use IO::Handle;
 use Encode;
 use Time::Piece;
+use Text::Markdown ();
 use Cache::Memcached::Fast;
 
 my $DO_NOT_EXPIRE = 10 * 60; # 10 min
@@ -55,12 +56,7 @@ sub markdown {
     my $key   = 'markdown:' . sha256_hex($bytes);
 
     return $self->cache($key, $DO_NOT_EXPIRE, sub {
-        my ($fh, $filename) = tempfile();
-        $fh->print($bytes);
-        $fh->close;
-        my $html = qx{ ../bin/markdown $filename };
-        unlink $filename;
-        return $html;
+        Text::Markdown::markdown($bytes);
     });
 }
 
