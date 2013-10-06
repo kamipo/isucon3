@@ -37,8 +37,11 @@ sub markdown {
     my($self, $content) = @_;
     my $bytes = encode_utf8($content);
     my $key   = 'markdown:' . sha256_hex($bytes);
-    my $html = $self->memd->get($key);
-    return $html if $html;
+    my $html;
+    if (0) {
+        $html = $self->memd->get($key);
+        return $html if $html;
+    }
 
     my ($fh, $filename) = tempfile();
     $fh->print($bytes);
