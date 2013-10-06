@@ -307,12 +307,6 @@ post '/memo' => [qw(session get_user require_user anti_csrf)] => sub {
         scalar($c->req->param('is_private')) ? 1 : 0,
     );
     my $memo_id = $self->dbh->last_insert_id;
-    unless ($c->req->param('is_private')) {
-        $self->dbh->query(
-            'INSERT INTO public_memos (memo_id) VALUES (?)',
-            $memo_id,
-        );
-    }
     $c->redirect('/memo/' . $memo_id);
 };
 
