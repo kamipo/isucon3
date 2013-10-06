@@ -64,7 +64,7 @@ sub markdown {
     });
 }
 
-sub incr_get_memos_count {
+sub incr_memos_count {
     my($self) = @_;
 
     $self->memd->delete($KEY_MEMOS_COUNT);
