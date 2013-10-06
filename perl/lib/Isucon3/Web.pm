@@ -27,7 +27,7 @@ sub load_config {
 sub memd {
     my($self) = @_;
     $self->{_memd} ||= do {
-        Cache::Memcached::Fast->new
+        Cache::Memcached::Fast->new(
             servers => [ "localhost:11211" ],
         );
     };
@@ -43,7 +43,7 @@ sub markdown {
     my ($fh, $filename) = tempfile();
     $fh->print($bytes);
     $fh->close;
-    my $html = qx{ ../bin/markdown $filename };
+    $html = qx{ ../bin/markdown $filename };
     unlink $filename;
     $self->memd->set($key, $html, 60 * 60);
     return $html;
