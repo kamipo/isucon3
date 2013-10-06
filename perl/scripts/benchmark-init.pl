@@ -14,7 +14,7 @@ my $app = Isucon3::Web->new("$root_dir/..");
 `cat /home/isucon/webapp/config/add-schema.sql | mysql -uisucon isucon`;
 
 # create user cache
-my $users = $app->dbh->select_all('SELECT id, username, password, salt FROM user');
+my $users = $app->dbh->select_all('SELECT id, username, password, salt FROM users');
 for my $user (@$users) {
     $app->memd->set($app->userid_key($user->{id}), join("\t", $user->{username}, $user->{password}, $user->{salt}));
     $app->memd->set($app->username_key($user->{username}), join("\t", $user->{id}, $user->{password}, $user->{salt}));
