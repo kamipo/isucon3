@@ -195,7 +195,7 @@ get '/' => [qw(session get_user)] => sub {
         'SELECT count(*) FROM public_memos'
     );
     my $memos = $self->dbh->select_all(
-        'SELECT * FROM public_memos JOIN memos ON public_memos.memo_id=memos.id ORDER BY id DESC LIMIT 100',
+        'SELECT * FROM public_memos JOIN memos ON public_memos.memo_id=memos.id ORDER BY memos.id DESC LIMIT 100',
     );
     $self->set_username_into_memos($memos);
     $c->render('index.tx', {
