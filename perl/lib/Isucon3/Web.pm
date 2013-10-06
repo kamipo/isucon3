@@ -74,11 +74,11 @@ sub incr_get_memos_count {
 sub get_memos_count {
     my($self) = @_;
 
-    #return $self->cache($KEY_MEMOS_COUNT, $DO_NOT_EXPIRE, sub {
+    return $self->cache($KEY_MEMOS_COUNT, $DO_NOT_EXPIRE, sub {
         $self->dbh->select_one(
             'SELECT count(*) FROM memos WHERE is_private=0'
         );
-    #});
+    });
 }
 
 sub dbh {
