@@ -3,6 +3,8 @@ use strict;
 use warnings;
 use lib '/home/isucon/webapp/perl/lib', '/home/isucon/webapp/perl/local/lib/perl5';
 
+use File::Basename;
+
 my $root_dir = File::Basename::dirname(__FILE__);
 
 my $app = Isucon3::Web->new("$root_dir/..");
