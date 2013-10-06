@@ -308,7 +308,7 @@ get '/mypage' => [qw(session get_user require_user)] => sub {
     my ($self, $c) = @_;
 
     my $memos = $self->dbh->select_all(
-        'SELECT id, content, is_private, created_at, updated_at FROM memos WHERE user=? ORDER BY created_at DESC',
+        'SELECT id, content, is_private, created_at, updated_at FROM memos WHERE user=? ORDER BY id DESC',
         $c->stash->{user}->{id},
     );
     $c->render('mypage.tx', { memos => $memos });
