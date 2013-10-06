@@ -51,6 +51,13 @@ sub markdown {
     return $html;
 }
 
+sub get_memos_count {
+    my($self) = @_;
+    return $self->dbh->select_one(
+        'SELECT count(*) FROM memos WHERE is_private=0'
+    );
+}
+
 sub dbh {
     my ($self) = @_;
     $self->{_dbh} ||= do {
@@ -141,9 +148,7 @@ filter 'anti_csrf' => sub {
 get '/' => [qw(session get_user)] => sub {
     my ($self, $c) = @_;
 
-    my $total = $self->dbh->select_one(
-        'SELECT count(*) FROM memos WHERE is_private=0'
-    );
+    my $total = $self->get_memos_count();
     my $memos = $self->dbh->select_all(
         'SELECT * FROM memos WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 100',
     );
@@ -158,9 +163,7 @@ get '/' => [qw(session get_user)] => sub {
 get '/recent/:page' => [qw(session get_user)] => sub {
     my ($self, $c) = @_;
     my $page  = int $c->args->{page};
-    my $total = $self->dbh->select_one(
-        'SELECT count(*) FROM memos WHERE is_private=0'
-    );
+    my $total = $self->get_memos_count();
     my $memos = $self->dbh->select_all(
         sprintf("SELECT * FROM memos WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 100 OFFSET %d", $page * 100)
     );
