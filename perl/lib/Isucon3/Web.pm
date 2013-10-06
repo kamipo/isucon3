@@ -35,20 +35,30 @@ sub memd {
     };
 }
 
+sub cache {
+    my($self, $key, $expires_in, $cb) = @_;
+
+    my $value = $self->memd->get($key);
+    unless (defined $value) {
+        $value = $cb->($key);
+        $self->memd->set($key, $value, $expires_in);
+    }
+    return $value;
+}
+
 sub markdown {
     my($self, $content) = @_;
     my $bytes = encode_utf8($content);
     my $key   = 'markdown:' . sha256_hex($bytes);
-    my $html = $self->memd->get($key);
-    return $html if $html;
 
-    my ($fh, $filename) = tempfile();
-    $fh->print($bytes);
-    $fh->close;
-    $html = qx{ ../bin/markdown $filename };
-    unlink $filename;
-    $self->memd->set($key, $html, 60 * 60);
-    return $html;
+    return $self->cache($key, 60 * 60, sub {
+        my ($fh, $filename) = tempfile();
+        $fh->print($bytes);
+        $fh->close;
+        my $html = qx{ ../bin/markdown $filename };
+        unlink $filename;
+        return $html;
+    });
 }
 
 sub get_memos_count {
