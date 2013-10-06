@@ -372,9 +372,11 @@ sub get_memo_page {
     return unless $memo;
 
     if ($is_public) {
-#        my $key = "memos:public:$memo_id";
-#        my $obj = $self->memd->get($key);
-#        return $obj if $obj;
+        my $key = "memos:public:$memo_id";
+        unless ($memo->{is_private}) {
+            my $obj = $self->memd->get($key);
+            return $obj if $obj;
+        }
 
         if ($memo->{is_private}) {
             return $self->get_memo_page($memo_id, $user, 0, $memo);
@@ -390,6 +392,8 @@ sub get_memo_page {
             older => $older,
             newer => $newer,
         };
+
+        $self->memd->set($key, $obj);
 
         return $obj;
     } else {

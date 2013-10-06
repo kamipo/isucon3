@@ -19,3 +19,12 @@ for my $user (@$users) {
     $app->memd->set($app->userid_key($user->{id}), join("\t", $user->{username}, $user->{password}, $user->{salt}));
     $app->memd->set($app->username_key($user->{username}), join("\t", $user->{id}, $user->{password}, $user->{salt}));
 }
+
+# memo page data cache
+my $memos = $app->dbh->select_all('SELECT id, user, content, is_private, created_at, updated_at FROM memos');
+for my $memo (@$memos) {
+
+    $app->get_memo_page($memos->{id}, $app->memd->get($app->userid_key($memos->{user})), 1, $memo);
+
+    #$app->memos_user_key()
+}
